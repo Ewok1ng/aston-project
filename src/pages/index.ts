@@ -1,2 +1,2 @@
-export { Main } from './Main/Main';
-export { History } from './History/History';
+export { Main } from './main/main';
+export { History } from './history/history';

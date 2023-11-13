@@ -1,0 +1,27 @@
+.inputContainer {
+	position: relative;
+
+	display: flex;
+}
+
+.input {
+	flex-grow: 1;
+	padding: 6px 30px 6px 12px;
+	outline: none;
+
+	font-family: 'Roboto', sans-serif;
+	line-height: 20px;
+	color: #fff;
+	background: transparent;
+
+	border: 1px solid #fff;
+	border-radius: 10px;
+}
+
+.button {
+	position: absolute;
+	top: 50%;
+	right: 0;
+
+	transform: translateY(-50%);
+}

@@ -1,0 +1,63 @@
+.card {
+	justify-self: center;
+}
+
+.cardLink {
+	text-decoration: none;
+	color: #202020;
+}
+
+.content {
+	width: 250px;
+	height: 420px;
+}
+
+.imageContainer {
+	width: 100%;
+	height: 375px;
+
+	border: 1px solid #202020;
+}
+
+.image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.info {
+	width: 100%;
+	padding: 8px 4px;
+
+	display: flex;
+	align-items: center;
+
+	border: 1px solid #202020;
+	border-top: none;
+}
+
+.title {
+	margin: 0;
+
+	flex: 1 0 80%;
+
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.icon {
+	fill: none;
+}
+
+.icon path {
+	stroke: #202020;
+}
+
+.active .icon {
+	fill: #ec1d24;
+}
+
+.active .icon path {
+	stroke: #ec1d24;
+}

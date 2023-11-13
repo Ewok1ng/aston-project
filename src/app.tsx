@@ -1,21 +1,20 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
-import { Main, History } from './pages';
+import { Main, History, Layout, Comics, Favourite } from './pages';
 
 function App() {
 	return (
 		<div className="app">
-			<BrowserRouter>
-				<header>
-					<Link to={'/'}>Main</Link>
-					<Link to={'/history'}>History</Link>
-				</header>
-				<Routes>
-					<Route path="/" element={<Main />} />
-					<Route path="/history" element={<History />} />
-				</Routes>
-			</BrowserRouter>
+			{/* REFACTOR */}
+			<Routes>
+				<Route path="/" element={<Layout />}>
+					<Route index element={<Main />} />
+					<Route path="comics/:comicsId" element={<Comics />} />
+					<Route path="history" element={<History />} />
+					<Route path="favourite" element={<Favourite />} />
+				</Route>
+			</Routes>
 		</div>
 	);
 }

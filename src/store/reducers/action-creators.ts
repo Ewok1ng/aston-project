@@ -15,14 +15,13 @@ export const fetchAllComics = createAsyncThunk(
 	'comics/fetchAllComics',
 	async (_, thunkAPI) => {
 		try {
-			const comicsList = await axios
+			return await axios
 				.get<ComicsResponseType>(URL, {
 					params: queryParams
 				})
 				.then(res => res.data.data.results);
 
 			// TODO normalize state
-			return comicsList;
 		} catch (e) {
 			return thunkAPI.rejectWithValue((e as Error).message);
 		}
@@ -35,17 +34,16 @@ export const fetchComicsById = createAsyncThunk(
 		const id = parseInt(comicsId);
 
 		try {
-			const comics = await axios
+			return await axios
 				.get<ComicsResponseType>(URL, {
 					params: {
 						...queryParams,
 						id
 					}
 				})
-				.then(res => res.data.data.results);
+				.then(res => res.data.data.results[0]);
 
 			// TODO normalize state
-			return comics[0];
 		} catch (e) {
 			return thunkAPI.rejectWithValue((e as Error).message);
 		}

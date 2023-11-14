@@ -1,6 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
-const rootReducer = combineReducers({});
+import comicsReducer from './reducers/comics-slice';
+import singleComicsReducer from './reducers/single-comics-slice';
+
+const rootReducer = combineReducers({
+	comicsReducer,
+	singleComicsReducer
+});
 
 export const setupStore = () => {
 	return configureStore({

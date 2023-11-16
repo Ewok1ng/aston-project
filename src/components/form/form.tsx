@@ -54,6 +54,7 @@ export function Form({ text, onSubmitForm }: Props) {
 				<input
 					className={classNames(s.input)}
 					id="password"
+					type="password"
 					{...register('password')}
 				/>
 				<span className={s.error}>{errors.password?.message}</span>

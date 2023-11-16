@@ -53,7 +53,7 @@ export function Header() {
 									<li className={s.menuItem}>
 										<NavLink
 											className={isLinkActive}
-											to="/register"
+											to="/signup"
 										>
 											Registration
 										</NavLink>
@@ -61,7 +61,7 @@ export function Header() {
 									<li className={s.menuItem}>
 										<NavLink
 											className={isLinkActive}
-											to="/login"
+											to="/signin"
 										>
 											Login
 										</NavLink>

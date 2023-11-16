@@ -27,8 +27,8 @@ function App() {
 					<Route path="comics/:comicsId" element={<Comics />} />
 					<Route path="history" element={<History />} />
 					<Route path="favourite" element={<Favourite />} />
-					<Route path="register" element={<Register />} />
-					<Route path="login" element={<Login />} />
+					<Route path="signup" element={<Register />} />
+					<Route path="signin" element={<Login />} />
 				</Route>
 			</Routes>
 		</div>

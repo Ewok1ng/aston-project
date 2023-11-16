@@ -1,9 +1,23 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { Main, History, Layout, Comics, Favourite } from './pages';
+import {
+	Main,
+	History,
+	Layout,
+	Comics,
+	Favourite,
+	Register,
+	Login
+} from './pages';
+import { useAuth } from './hooks';
 
 function App() {
+	const { auth } = useAuth();
+	React.useEffect(() => {
+		auth();
+	}, []);
+
 	return (
 		<div className="app">
 			{/* REFACTOR */}
@@ -13,6 +27,8 @@ function App() {
 					<Route path="comics/:comicsId" element={<Comics />} />
 					<Route path="history" element={<History />} />
 					<Route path="favourite" element={<Favourite />} />
+					<Route path="register" element={<Register />} />
+					<Route path="login" element={<Login />} />
 				</Route>
 			</Routes>
 		</div>

@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import './normalize.css';
 import './index.css';
 
+import './firebase';
 import reportWebVitals from './reportWebVitals';
 
 import App from './app';

@@ -31,6 +31,7 @@ export function ItemCard({ itemId, title, imageSrc }: Props) {
 						className={classNames(s.favourite, {
 							[s.active]: isFavourite
 						})}
+						buttonType="icon"
 						onClick={onFavouriteClick}
 					>
 						<svg

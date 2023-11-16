@@ -13,7 +13,7 @@ export function Search({ onChange }: Props) {
 	return (
 		<div className={s.inputContainer}>
 			<input className={s.input} type="search" onChange={onChange} />
-			<Button className={s.button} onClick={onSearch}>
+			<Button className={s.button} buttonType="icon" onClick={onSearch}>
 				<svg
 					viewBox="0 0 24 24"
 					fill="none"

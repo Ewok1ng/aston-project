@@ -1,17 +1,28 @@
 .button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	background: transparent;
+
+	cursor: pointer;
+}
+
+.iconButton {
 	padding: 0;
 
 	width: 34px;
 	height: 34px;
 
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
 	border: none;
-	background: transparent;
+}
 
-	cursor: pointer;
+.textButton {
+	padding: 4px 8px;
+	min-width: 100px;
+	height: 40px;
+
+	border: 1px solid #202020;
 }
 
 .button > svg {

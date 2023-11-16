@@ -1,0 +1,54 @@
+.form {
+	max-width: 300px;
+
+	display: flex;
+	flex-direction: column;
+}
+
+.inputContainer {
+	margin-bottom: 12px;
+	display: flex;
+	flex-direction: column;
+}
+.label {
+	margin-bottom: 5px;
+	font-size: 14px;
+
+	color: #202020;
+}
+
+.input {
+	flex-grow: 1;
+	padding: 6px 8px;
+	outline: none;
+
+	font-family: 'Roboto', sans-serif;
+	line-height: 20px;
+	background: transparent;
+
+	border: 1px solid #202020;
+	color: #202020;
+}
+
+.error {
+	min-height: 20px;
+
+	display: inline-block;
+	font-size: 14px;
+	color: #ec1d24;
+}
+
+.button {
+	margin-bottom: 10px;
+
+	background: #fff;
+
+	transition:
+		background 0.2s ease-in-out,
+		color 0.2s ease-in-out;
+}
+
+.button:hover {
+	background: #202020;
+	color: #fff;
+}

@@ -1,13 +1,29 @@
-import React from 'react';
-
+import React, { ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
 import classNames from 'classnames';
 
 import s from './button.module.css';
-import { Props } from './button.props';
 
-export function Button({ className, onClick, children }: Props) {
+interface Props
+	extends DetailedHTMLProps<
+		ButtonHTMLAttributes<HTMLButtonElement>,
+		HTMLButtonElement
+	> {
+	buttonType: 'text' | 'icon';
+}
+
+export function Button({ className, buttonType, children, ...props }: Props) {
 	return (
-		<button className={classNames(s.button, className)} onClick={onClick}>
+		<button
+			className={classNames(
+				s.button,
+				{
+					[s.textButton]: buttonType === 'text',
+					[s.iconButton]: buttonType === 'icon'
+				},
+				className
+			)}
+			{...props}
+		>
 			{children}
 		</button>
 	);

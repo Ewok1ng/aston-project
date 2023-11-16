@@ -12,13 +12,11 @@ export function useAuth() {
 	const authUser = () => {
 		switch (process.env.REACT_APP_REMOTE_STORE) {
 			case 'firebase': {
-				const unsubscribe = auth.onAuthStateChanged(async user => {
+				return auth.onAuthStateChanged(async user => {
 					if (user) {
 						dispatch(setUser(user));
 					}
 				});
-
-				return unsubscribe;
 			}
 			case 'ls':
 				{

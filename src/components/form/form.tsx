@@ -7,12 +7,16 @@ import { validationSchema } from '../../utils/validation-schema';
 
 import { Button } from '../../components';
 
-import { Props } from './form.props';
 import s from './form.module.css';
 
 interface AuthFormValues {
 	email: string;
 	password: string;
+}
+
+interface Props {
+	text: string;
+	onSubmitForm: (email: string, password: string) => void;
 }
 
 export function Form({ text, onSubmitForm }: Props) {

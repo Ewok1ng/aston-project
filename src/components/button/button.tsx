@@ -1,9 +1,15 @@
-import React from 'react';
-
+import React, { ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
 import classNames from 'classnames';
 
 import s from './button.module.css';
-import { Props } from './button.props';
+
+interface Props
+	extends DetailedHTMLProps<
+		ButtonHTMLAttributes<HTMLButtonElement>,
+		HTMLButtonElement
+	> {
+	buttonType: 'text' | 'icon';
+}
 
 export function Button({ className, buttonType, children, ...props }: Props) {
 	return (

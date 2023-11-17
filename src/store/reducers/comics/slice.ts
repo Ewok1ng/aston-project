@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { Comics } from '../../types/comics-response';
+import { Comics } from '../../../types/comics-response';
 
 import { fetchComicsById } from './action-creators';
 

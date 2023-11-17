@@ -1,8 +1,15 @@
 import React from 'react';
 
-import { fetchAllComics } from '../../store/reducers/action-creators';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchAllComics } from '../../store/reducers/all-comics/action-creators';
+import {
+	addFavourite,
+	fetchAllFavourite,
+	removeFavourite
+} from '../../store/reducers/favourite/action-creators';
+import { useAppDispatch, useAppSelector, useAuth } from '../../hooks';
 import { getImage, FormatEnum } from '../../utils/images';
+import { Comics } from '../../types/comics-response';
+
 import { ItemCard } from '../../components/item-card/item-card';
 
 import s from './main.module.css';
@@ -11,12 +18,27 @@ export function Main() {
 	const dispatch = useAppDispatch();
 
 	const { comicsList, isLoading } = useAppSelector(
-		state => state.comicsReducer
+		state => state.allComicsReducer
 	);
+	const { isAuth } = useAuth();
+	const { favouriteList } = useAppSelector(state => state.favouriteReducer);
+
+	const isFavourite = (id: number) => {
+		return favouriteList.find(item => item.id === id) ? true : false;
+	};
 
 	React.useEffect(() => {
 		dispatch(fetchAllComics());
+		dispatch(fetchAllFavourite());
 	}, []);
+
+	const addComicsToFavourite = (comics: Comics) => {
+		dispatch(addFavourite(comics));
+	};
+
+	const removeComicsFromFavourite = (comics: Comics) => {
+		dispatch(removeFavourite(comics));
+	};
 
 	if (isLoading) {
 		return <div>Loading...</div>;
@@ -32,6 +54,12 @@ export function Main() {
 						itemId={item.id}
 						title={item.title}
 						imageSrc={getImage(item, FormatEnum.portrait)}
+						isAuth={isAuth}
+						isFavourite={isFavourite(item.id)}
+						addToFavourite={() => addComicsToFavourite(item)}
+						removeFromFavourite={() =>
+							removeComicsFromFavourite(item)
+						}
 					/>
 				))}
 			</ul>

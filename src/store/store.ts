@@ -1,13 +1,15 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
-import comicsReducer from './reducers/comics-slice';
-import singleComicsReducer from './reducers/single-comics-slice';
-import userReducer from './reducers/user-slice';
+import allComicsReducer from './reducers/all-comics/slice';
+import singleComicsReducer from './reducers/comics/slice';
+import userReducer from './reducers/user/slice';
+import favouriteReducer from './reducers/favourite/slice';
 
 const rootReducer = combineReducers({
-	comicsReducer,
+	allComicsReducer,
 	singleComicsReducer,
-	userReducer
+	userReducer,
+	favouriteReducer
 });
 
 export const setupStore = () => {

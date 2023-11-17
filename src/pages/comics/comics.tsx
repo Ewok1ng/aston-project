@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
-import { fetchComicsById } from '../../store/reducers/action-creators';
+import { fetchComicsById } from '../../store/reducers/comics/action-creators';
 
 import s from './comics.module.css';
 

@@ -46,6 +46,11 @@
 	white-space: nowrap;
 }
 
+.favourite {
+	opacity: 0;
+	visibility: hidden;
+}
+
 .icon {
 	fill: none;
 }
@@ -60,4 +65,9 @@
 
 .active .icon path {
 	stroke: #ec1d24;
+}
+
+.visible {
+	opacity: 1;
+	visibility: visible;
 }

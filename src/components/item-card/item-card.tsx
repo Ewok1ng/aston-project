@@ -23,12 +23,12 @@ export function ItemCard({
 	imageSrc,
 	isAuth,
 	isFavourite,
-	addToFavourite,
+	addToFavourite = () => {},
 	removeFromFavourite
 }: Props) {
 	const onFavouriteClick = () => {
 		if (!isFavourite) {
-			addToFavourite?.();
+			addToFavourite();
 		} else {
 			removeFromFavourite();
 		}

@@ -1,25 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { Comics } from '../../types/comics-response';
+import { Comics } from '../../../types/comics-response';
 
 import { fetchAllComics } from './action-creators';
 
 interface ComicsState {
 	comicsList: Comics[];
-	isComicsLoading: boolean;
 	isLoading: boolean;
 	error: string;
 }
 
 const initialState: ComicsState = {
 	comicsList: [],
-	isComicsLoading: false,
 	isLoading: false,
 	error: ''
 };
 
-export const comicsSlice = createSlice({
-	name: 'comics',
+export const allComicsSlice = createSlice({
+	name: 'allComics',
 	initialState,
 	reducers: {},
 	extraReducers: builder => {
@@ -37,4 +35,4 @@ export const comicsSlice = createSlice({
 	}
 });
 
-export default comicsSlice.reducer;
+export default allComicsSlice.reducer;

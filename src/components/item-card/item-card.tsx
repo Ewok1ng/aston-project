@@ -11,19 +11,33 @@ interface Props {
 	itemId: number;
 	title: string;
 	imageSrc: string;
+	isAuth: boolean;
+	isFavourite: boolean;
+	addToFavourite?: () => void;
+	removeFromFavourite: () => void;
 }
 
-export function ItemCard({ itemId, title, imageSrc }: Props) {
-	const [isFavourite, setIsFavourite] = React.useState<boolean>(false);
-
+export function ItemCard({
+	itemId,
+	title,
+	imageSrc,
+	isAuth,
+	isFavourite,
+	addToFavourite = () => {},
+	removeFromFavourite
+}: Props) {
 	const onFavouriteClick = () => {
-		setIsFavourite(prev => !prev);
-		// TODO
+		if (!isFavourite) {
+			addToFavourite();
+		} else {
+			removeFromFavourite();
+		}
 	};
+
 	return (
 		<li className={s.card} title={title}>
 			<div className={s.content}>
-				<Link className={s.cardLink} to={`comics/${itemId}`}>
+				<Link className={s.cardLink} replace to={`/comics/${itemId}`}>
 					<div className={s.imageContainer}>
 						<img className={s.image} src={imageSrc} alt={title} />
 					</div>
@@ -32,7 +46,8 @@ export function ItemCard({ itemId, title, imageSrc }: Props) {
 					<h3 className={s.title}>{title}</h3>
 					<Button
 						className={classNames(s.favourite, {
-							[s.active]: isFavourite
+							[s.active]: isFavourite,
+							[s.visible]: isAuth
 						})}
 						buttonType="icon"
 						onClick={onFavouriteClick}

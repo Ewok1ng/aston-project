@@ -3,7 +3,9 @@ import { LsUser } from '../models/user';
 export function lsRegistration(email: string, password: string): LsUser | null {
 	const user = {
 		email,
-		password
+		password,
+		favouriteList: [],
+		historyList: []
 	};
 
 	const existingUser = localStorage.getItem(email);
@@ -39,4 +41,8 @@ export function authLsUser(userEmail: string) {
 
 export function logoutlsUser() {
 	localStorage.removeItem('auth');
+}
+
+export function getAuthUser() {
+	return localStorage.getItem('auth');
 }

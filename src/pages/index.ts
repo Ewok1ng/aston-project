@@ -5,3 +5,4 @@ export { Comics } from './comics/comics';
 export { Favourite } from './favourite/favourite';
 export { Login } from './login/login';
 export { Register } from './register/register';
+export { Search } from './search/search';

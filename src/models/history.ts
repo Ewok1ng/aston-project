@@ -1,3 +1,4 @@
 export interface HistoryItem {
-	// TODO
+	timestamp: string;
+	name: string;
 }

@@ -1,0 +1,10 @@
+.items {
+	padding: 20px 0;
+
+	display: grid;
+	justify-content: space-between;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 20px;
+
+	list-style: none;
+}

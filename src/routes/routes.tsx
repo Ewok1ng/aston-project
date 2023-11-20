@@ -8,7 +8,8 @@ import {
 	Comics,
 	Favourite,
 	Register,
-	Login
+	Login,
+	Search
 } from '../pages';
 import { useAuth } from '../hooks';
 
@@ -16,14 +17,13 @@ import { Private } from './private';
 
 export default function PublicRoutes() {
 	const { isAuth } = useAuth();
-	React.useEffect(() => {
-		console.log('isAuth', isAuth);
-	});
+
 	return (
 		<Routes>
 			<Route path="/" element={<Layout />}>
 				<Route index element={<Main />} />
 				<Route path="comics/:comicsId" element={<Comics />} />
+				<Route path="search" element={<Search />} />
 				<Route path="signup" element={<Register />} />
 				<Route path="signin" element={<Login />} />
 				<Route element={<Private isAuth={isAuth} />}>

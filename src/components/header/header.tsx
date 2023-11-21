@@ -76,7 +76,7 @@ export function Header() {
 							</Button>
 						)}
 					</nav>
-					<Search onChange={() => {}} />
+					<Search />
 				</div>
 			</div>
 		</div>

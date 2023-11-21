@@ -1,7 +1,16 @@
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import {
+	CollectionReference,
+	DocumentData,
+	collection,
+	getFirestore
+} from 'firebase/firestore';
+
+import { HistoryItem } from './models/history';
+
+import { Comics } from './types/comics-response';
 
 const firebaseConfig = {
 	apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -14,7 +23,14 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const createCollection = <T = DocumentData>(collectionName: string) => {
+	return collection(db, collectionName) as CollectionReference<T>;
+};
+
 export const auth = getAuth();
-export const db = getFirestore(app);
+export const favouriteCollection = createCollection<Comics>('favourite');
+export const historyCollection = createCollection<HistoryItem>('history');
 
 getAnalytics(app);

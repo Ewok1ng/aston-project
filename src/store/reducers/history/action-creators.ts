@@ -1,25 +1,27 @@
-import { deleteDoc, doc, getDocs, setDoc } from '@firebase/firestore';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { deleteDoc, doc, getDocs, setDoc } from 'firebase/firestore';
 
-import { Comics } from '../../../types/comics-response';
+import { historyCollection } from '../../../firebase';
 import { getAuthUser } from '../../../services/ls-auth';
 import { getLsData, setLsData } from '../../../services/ls-data';
-import { favouriteCollection } from '../../../firebase';
 
-export const addFavourite = createAsyncThunk(
-	'favourite/addToFavourite',
-	async (comics: Comics, thunkAPI) => {
+export const addHistory = createAsyncThunk(
+	'history/addToHistory',
+	async (name: string, thunkAPI) => {
+		const date = new Date().toJSON();
+		const history = {
+			timestamp: date,
+			name
+		};
+
 		switch (process.env.REACT_APP_REMOTE_STORE) {
 			case 'firebase':
 				try {
-					const favouriteRef = doc(
-						favouriteCollection,
-						comics.id.toString()
-					);
+					const historyRef = doc(historyCollection, date);
 
-					await setDoc(favouriteRef, comics);
+					await setDoc(historyRef, history);
 
-					return comics;
+					return history;
 				} catch (e) {
 					return thunkAPI.rejectWithValue((e as Error).message);
 				}
@@ -29,11 +31,11 @@ export const addFavourite = createAsyncThunk(
 					const userData = getLsData(authUser);
 
 					if (userData) {
-						userData.favouriteList.push(comics);
+						userData.historyList.push(history);
 						setLsData(authUser, userData);
 					}
 
-					return comics;
+					return history;
 				} catch (e) {
 					return thunkAPI.rejectWithValue((e as Error).message);
 				}
@@ -43,19 +45,16 @@ export const addFavourite = createAsyncThunk(
 	}
 );
 
-export const removeFavourite = createAsyncThunk(
-	'favourite/removeFromFavourite',
-	async (comics: Comics, thunkAPI) => {
+export const removeHistory = createAsyncThunk(
+	'history/removeFromHistory',
+	async (timestamp: string, thunkAPI) => {
 		switch (process.env.REACT_APP_REMOTE_STORE) {
 			case 'firebase':
 				try {
-					const favouriteRef = doc(
-						favouriteCollection,
-						comics.id.toString()
-					);
-					await deleteDoc(favouriteRef);
+					const historyRef = doc(historyCollection, timestamp);
+					await deleteDoc(historyRef);
 
-					return comics;
+					return timestamp;
 				} catch (e) {
 					return thunkAPI.rejectWithValue((e as Error).message);
 				}
@@ -65,13 +64,13 @@ export const removeFavourite = createAsyncThunk(
 					const userData = getLsData(authUser);
 
 					if (userData) {
-						userData.favouriteList = userData.favouriteList.filter(
-							item => item.id !== comics.id
+						userData.historyList = userData.historyList.filter(
+							item => item.timestamp !== timestamp
 						);
 						setLsData(authUser, userData);
 					}
 
-					return comics;
+					return timestamp;
 				} catch (e) {
 					return thunkAPI.rejectWithValue((e as Error).message);
 				}
@@ -81,16 +80,18 @@ export const removeFavourite = createAsyncThunk(
 	}
 );
 
-export const fetchAllFavourite = createAsyncThunk(
-	'favourite/fetchAllFavoutrite',
+export const fetchAllHistory = createAsyncThunk(
+	'history/fetchAllHistory',
 	async (_, thunkAPI) => {
 		switch (process.env.REACT_APP_REMOTE_STORE) {
 			case 'firebase':
 				try {
-					const favSnapshot = await getDocs(favouriteCollection);
-					const favList = favSnapshot.docs.map(doc => doc.data());
+					const historySnapshot = await getDocs(historyCollection);
+					const historyList = historySnapshot.docs.map(doc =>
+						doc.data()
+					);
 
-					return favList;
+					return historyList;
 				} catch (e) {
 					return thunkAPI.rejectWithValue((e as Error).message);
 				}
@@ -100,7 +101,7 @@ export const fetchAllFavourite = createAsyncThunk(
 					const userData = getLsData(authUser);
 
 					if (userData) {
-						return userData.favouriteList;
+						return userData.historyList;
 					}
 
 					return [];

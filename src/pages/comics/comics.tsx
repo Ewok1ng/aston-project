@@ -15,7 +15,7 @@ export function Comics() {
 
 	React.useEffect(() => {
 		dispatch(fetchComicsById(comicsId || ''));
-	}, []);
+	}, [comicsId]);
 
 	const { comics, isLoading, error } = useAppSelector(
 		state => state.singleComicsReducer

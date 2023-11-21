@@ -1,0 +1,10 @@
+.button {
+	width: 100%;
+	height: 100%;
+
+	transition: background 0.2s ease-in-out;
+}
+
+.button:hover {
+	background: rgba(32, 32, 32, 0.3);
+}

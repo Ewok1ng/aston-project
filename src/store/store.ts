@@ -4,12 +4,16 @@ import allComicsReducer from './reducers/all-comics/slice';
 import singleComicsReducer from './reducers/comics/slice';
 import userReducer from './reducers/user/slice';
 import favouriteReducer from './reducers/favourite/slice';
+import searchReducer from './reducers/search/slice';
+import historyReducer from './reducers/history/slice';
 
 const rootReducer = combineReducers({
 	allComicsReducer,
 	singleComicsReducer,
 	userReducer,
-	favouriteReducer
+	favouriteReducer,
+	searchReducer,
+	historyReducer
 });
 
 export const setupStore = () => {

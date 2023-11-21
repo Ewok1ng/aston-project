@@ -1,14 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import {
-	collection,
-	deleteDoc,
-	doc,
-	getDocs,
-	setDoc
-} from 'firebase/firestore';
+import { deleteDoc, doc, getDocs, setDoc } from 'firebase/firestore';
 
-import { db } from '../../../firebase';
-import { HistoryItem } from '../../../models/history';
+import { historyCollection } from '../../../firebase';
 import { getAuthUser } from '../../../services/ls-auth';
 import { getLsData, setLsData } from '../../../services/ls-data';
 
@@ -24,9 +17,9 @@ export const addHistory = createAsyncThunk(
 		switch (process.env.REACT_APP_REMOTE_STORE) {
 			case 'firebase':
 				try {
-					const historyDocRef = doc(db, 'history', date);
+					const historyRef = doc(historyCollection, date);
 
-					await setDoc(historyDocRef, history);
+					await setDoc(historyRef, history);
 
 					return history;
 				} catch (e) {
@@ -58,7 +51,8 @@ export const removeHistory = createAsyncThunk(
 		switch (process.env.REACT_APP_REMOTE_STORE) {
 			case 'firebase':
 				try {
-					await deleteDoc(doc(db, 'history', timestamp));
+					const historyRef = doc(historyCollection, timestamp);
+					await deleteDoc(historyRef);
 
 					return timestamp;
 				} catch (e) {
@@ -92,10 +86,9 @@ export const fetchAllHistory = createAsyncThunk(
 		switch (process.env.REACT_APP_REMOTE_STORE) {
 			case 'firebase':
 				try {
-					const historyCol = collection(db, 'history');
-					const historySnapshot = await getDocs(historyCol);
-					const historyList = historySnapshot.docs.map(
-						doc => doc.data() as HistoryItem
+					const historySnapshot = await getDocs(historyCollection);
+					const historyList = historySnapshot.docs.map(doc =>
+						doc.data()
 					);
 
 					return historyList;

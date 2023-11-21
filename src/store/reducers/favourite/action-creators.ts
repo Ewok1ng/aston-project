@@ -1,16 +1,10 @@
-import {
-	collection,
-	deleteDoc,
-	doc,
-	getDocs,
-	setDoc
-} from '@firebase/firestore';
+import { deleteDoc, doc, getDocs, setDoc } from '@firebase/firestore';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { db } from '../../../firebase';
 import { Comics } from '../../../types/comics-response';
 import { getAuthUser } from '../../../services/ls-auth';
 import { getLsData, setLsData } from '../../../services/ls-data';
+import { favouriteCollection } from '../../../firebase';
 
 export const addFavourite = createAsyncThunk(
 	'favourite/addToFavourite',
@@ -18,12 +12,12 @@ export const addFavourite = createAsyncThunk(
 		switch (process.env.REACT_APP_REMOTE_STORE) {
 			case 'firebase':
 				try {
-					const frankDocRef = doc(
-						db,
-						'favourite',
+					const favouriteRef = doc(
+						favouriteCollection,
 						comics.id.toString()
 					);
-					await setDoc(frankDocRef, comics);
+
+					await setDoc(favouriteRef, comics);
 
 					return comics;
 				} catch (e) {
@@ -55,7 +49,11 @@ export const removeFavourite = createAsyncThunk(
 		switch (process.env.REACT_APP_REMOTE_STORE) {
 			case 'firebase':
 				try {
-					await deleteDoc(doc(db, 'favourite', comics.id.toString()));
+					const favouriteRef = doc(
+						favouriteCollection,
+						comics.id.toString()
+					);
+					await deleteDoc(favouriteRef);
 
 					return comics;
 				} catch (e) {
@@ -89,11 +87,8 @@ export const fetchAllFavourite = createAsyncThunk(
 		switch (process.env.REACT_APP_REMOTE_STORE) {
 			case 'firebase':
 				try {
-					const favCol = collection(db, 'favourite');
-					const favSnapshot = await getDocs(favCol);
-					const favList = favSnapshot.docs.map(
-						doc => doc.data() as Comics
-					);
+					const favSnapshot = await getDocs(favouriteCollection);
+					const favList = favSnapshot.docs.map(doc => doc.data());
 
 					return favList;
 				} catch (e) {

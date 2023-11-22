@@ -3,29 +3,29 @@ import { createSearchParams, useNavigate } from 'react-router-dom';
 import debounce from 'lodash.debounce';
 import classNames from 'classnames';
 
-import { Button, ItemSuggest } from '../../components';
-import { useAppDispatch, useAppSelector, useAuth } from '../../hooks';
-import {
-	fetchComicsByTitle,
-	fetchSuggestComicsByTitle
-} from '../../store/reducers/search/action-creators';
-import { addHistory } from '../../store/reducers/history/action-creators';
+import { SearchContext } from '../../context/search-context';
+import { useLazyFetchSuggestComicsByTitleQuery } from '../../store/api/comics-api';
+import { useAddToHistoryMutation } from '../../store/api/history-api';
 import { FormatEnum, getImage } from '../../utils/images';
+import { useAuth } from '../../hooks';
+import { Button, ItemSuggest, Loader } from '../../components';
 
 import s from './search.module.css';
 import { SearchIcon } from './search-icon';
 
 export function Search() {
 	const navigate = useNavigate();
-	const dispatch = useAppDispatch();
 	const { isAuth } = useAuth();
-	const { suggestList } = useAppSelector(state => state.searchReducer);
 
 	const autocompleteRef = React.useRef<null | HTMLDivElement>(null);
 	const inputRef = React.useRef<null | HTMLInputElement>(null);
 
-	const [searchValue, setSearchValue] = React.useState('');
+	const { searchValue, setSearchValue } = React.useContext(SearchContext);
 	const [isSuggestVisible, setIsSuggestVisible] = React.useState(false);
+
+	const [trigger, { currentData = [], isLoading, isFetching }] =
+		useLazyFetchSuggestComicsByTitleQuery();
+	const [addHistory] = useAddToHistoryMutation();
 
 	React.useEffect(() => {
 		document.addEventListener('click', handleClickOutside);
@@ -34,6 +34,10 @@ export function Search() {
 			document.removeEventListener('click', handleClickOutside);
 		};
 	}, []);
+
+	React.useEffect(() => {
+		getSuggestComics(searchValue);
+	}, [searchValue]);
 
 	const handleClickOutside = (e: MouseEvent) => {
 		if (
@@ -46,8 +50,8 @@ export function Search() {
 	};
 
 	const getSuggestComics = React.useCallback(
-		debounce(value => {
-			dispatch(fetchSuggestComicsByTitle(value));
+		debounce((value: string) => {
+			trigger(value);
 		}, 500),
 		[]
 	);
@@ -55,31 +59,30 @@ export function Search() {
 	const navigateToSearchPage = () => {
 		navigate({
 			pathname: '/search',
-			search: createSearchParams({ name: searchValue }).toString()
+			search: createSearchParams({
+				name: searchValue
+			}).toString()
 		});
 		setIsSuggestVisible(false);
 	};
 
 	const onSearchButtonClick = () => {
 		navigateToSearchPage();
-		dispatch(fetchComicsByTitle(searchValue));
 		saveToHistory();
 	};
 
 	const saveToHistory = () => {
 		if (isAuth) {
-			dispatch(addHistory(searchValue));
+			addHistory(searchValue);
 		}
 	};
 
 	const onChangeSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchValue(e.target.value);
-		getSuggestComics(e.target.value);
 	};
 
 	const onSearchFocus = () => {
 		setIsSuggestVisible(true);
-		dispatch(fetchSuggestComicsByTitle(searchValue));
 	};
 
 	const onClickEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -119,18 +122,22 @@ export function Search() {
 				})}
 				ref={autocompleteRef}
 			>
-				<ul className={s.list}>
-					{suggestList.map(item => (
-						<ItemSuggest
-							className={s.item}
-							key={item.id}
-							id={item.id}
-							title={item.title}
-							image={getImage(item, FormatEnum.portrait)}
-							onClick={onSuggestItemClick}
-						/>
-					))}
-				</ul>
+				{isLoading || isFetching ? (
+					<Loader className={s.loader} />
+				) : (
+					<ul className={s.list}>
+						{currentData.map(item => (
+							<ItemSuggest
+								className={s.item}
+								key={item.id}
+								id={item.id}
+								title={item.title}
+								image={getImage(item, FormatEnum.portrait)}
+								onClick={onSuggestItemClick}
+							/>
+						))}
+					</ul>
+				)}
 			</div>
 		</div>
 	);

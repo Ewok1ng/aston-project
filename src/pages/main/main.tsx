@@ -1,65 +1,37 @@
 import React from 'react';
 
-import { fetchAllComics } from '../../store/reducers/all-comics/action-creators';
-import {
-	addFavourite,
-	fetchAllFavourite,
-	removeFavourite
-} from '../../store/reducers/favourite/action-creators';
-import { useAppDispatch, useAppSelector, useAuth } from '../../hooks';
-import { getImage, FormatEnum } from '../../utils/images';
-import { Comics } from '../../types/comics-response';
-
-import { ItemCard } from '../../components/item-card/item-card';
+import { useFetchAllComicsQuery } from '../../store/api/comics-api';
+import { useFetchAllFavouriteQuery } from '../../store/api/favourite-api';
+import { Loader, ItemCard } from '../../components';
+import { Comics } from '../../models/comics';
 
 import s from './main.module.css';
 
 export function Main() {
-	const dispatch = useAppDispatch();
+	const {
+		data: comicsList = [],
+		isLoading,
+		isFetching
+	} = useFetchAllComicsQuery();
+	const { data: favouriteList = [] } = useFetchAllFavouriteQuery();
 
-	const { comicsList, isLoading } = useAppSelector(
-		state => state.allComicsReducer
-	);
-	const { isAuth } = useAuth();
-	const { favouriteList } = useAppSelector(state => state.favouriteReducer);
-
-	const isFavourite = (id: number) => {
+	const isComicsFavourite = (id: number) => {
 		return favouriteList.find(item => item.id === id) ? true : false;
 	};
 
-	React.useEffect(() => {
-		dispatch(fetchAllComics());
-		dispatch(fetchAllFavourite());
-	}, []);
-
-	const addComicsToFavourite = (comics: Comics) => {
-		dispatch(addFavourite(comics));
-	};
-
-	const removeComicsFromFavourite = (comics: Comics) => {
-		dispatch(removeFavourite(comics));
-	};
-
-	if (isLoading) {
-		return <div>Loading...</div>;
+	if (isLoading || isFetching) {
+		return <Loader />;
 	}
 
 	return (
 		<>
 			<h2>Marvel comics</h2>
 			<ul className={s.items}>
-				{comicsList.map(item => (
+				{comicsList.map((item: Comics) => (
 					<ItemCard
 						key={item.id}
-						itemId={item.id}
-						title={item.title}
-						imageSrc={getImage(item, FormatEnum.portrait)}
-						isAuth={isAuth}
-						isFavourite={isFavourite(item.id)}
-						addToFavourite={() => addComicsToFavourite(item)}
-						removeFromFavourite={() =>
-							removeComicsFromFavourite(item)
-						}
+						comics={item}
+						isFavourite={isComicsFavourite(item.id)}
 					/>
 				))}
 			</ul>

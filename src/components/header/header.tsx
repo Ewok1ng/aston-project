@@ -22,7 +22,7 @@ export function Header() {
 	};
 
 	return (
-		<div className={s.header}>
+		<header className={s.header}>
 			<div className="container">
 				<div className={s.headerInner}>
 					<nav className={s.menu}>
@@ -79,6 +79,6 @@ export function Header() {
 					<Search />
 				</div>
 			</div>
-		</div>
+		</header>
 	);
 }

@@ -1,4 +1,4 @@
-import { Comics } from '../types/comics-response';
+import { Comics } from '../models/comics';
 
 export enum FormatEnum {
 	portrait,

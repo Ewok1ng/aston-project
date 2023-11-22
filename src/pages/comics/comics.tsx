@@ -1,47 +1,38 @@
 import React from 'react';
-
 import { useParams } from 'react-router-dom';
 
-import { useAppDispatch, useAppSelector } from '../../hooks';
-
-import { fetchComicsById } from '../../store/reducers/comics/action-creators';
+import { useFetchComicsByIdQuery } from '../../store/api/comics-api';
 
 import s from './comics.module.css';
 
 export function Comics() {
 	let content;
 	const { comicsId } = useParams();
-	const dispatch = useAppDispatch();
-
-	React.useEffect(() => {
-		dispatch(fetchComicsById(comicsId || ''));
-	}, [comicsId]);
-
-	const { comics, isLoading, error } = useAppSelector(
-		state => state.singleComicsReducer
+	const { data, isLoading, isError } = useFetchComicsByIdQuery(
+		comicsId || ''
 	);
 
 	if (isLoading) {
 		content = <div className={s.continer}>Loading...</div>;
 	}
 
-	if (error) {
+	if (isError) {
 		content = <div className={s.container}>Error...</div>;
 	}
 
-	if (comics && !isLoading) {
+	if (data && !isLoading) {
 		content = (
 			<div className={s.container}>
 				<div className={s.wrapper}>
 					<div className={s.thumbnailContainer}>
 						<img
 							className={s.thumbnail}
-							src={`${comics.thumbnail.path}.${comics.thumbnail.extension}`}
-							alt={comics.title}
+							src={`${data.thumbnail.path}.${data.thumbnail.extension}`}
+							alt={data.title}
 						/>
 					</div>
 					<div className={s.info}>
-						<h2 className={s.title}>{comics.title}</h2>
+						<h2 className={s.title}>{data.title}</h2>
 						<div className={s.publish}>
 							{/* TODO */}
 							<strong>On sale: </strong>
@@ -49,7 +40,7 @@ export function Comics() {
 						</div>
 						<p className={s.dsecription}>
 							{/* TODO */}
-							{comics.description?.split('<br>').join(' ')}
+							{data.description}
 						</p>
 					</div>
 				</div>

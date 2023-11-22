@@ -10,8 +10,10 @@ export function Layout() {
 	return (
 		<div className={s.layout}>
 			<Header />
-			<main className="container">
-				<Outlet />
+			<main className={s.main}>
+				<div className="container">
+					<Outlet />
+				</div>
 			</main>
 		</div>
 	);

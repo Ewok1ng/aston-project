@@ -1,5 +1,5 @@
 import { auth } from '../firebase';
-import { removeUser, setUser } from '../store/reducers/user/slice';
+import { removeUser, setUser } from '../store/reducers/user-slice';
 import { fbRegister, fbLogin } from '../services/firebase-auth';
 import { logoutlsUser, lsLogin, lsRegistration } from '../services/ls-auth';
 

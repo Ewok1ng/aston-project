@@ -1,8 +1,7 @@
 import { User } from 'firebase/auth';
 
-import { Comics } from '../types/comics-response';
-
 import { HistoryItem } from './history';
+import { Comics } from './comics';
 
 export interface FsUser extends User {}
 export interface LsUser {

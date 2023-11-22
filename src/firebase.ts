@@ -9,8 +9,7 @@ import {
 } from 'firebase/firestore';
 
 import { HistoryItem } from './models/history';
-
-import { Comics } from './types/comics-response';
+import { Comics } from './models/comics';
 
 const firebaseConfig = {
 	apiKey: process.env.REACT_APP_FIREBASE_API_KEY,

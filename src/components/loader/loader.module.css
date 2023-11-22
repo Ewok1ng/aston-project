@@ -1,0 +1,24 @@
+.loader {
+	height: 100%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.spinner {
+	width: 100px;
+	height: 100px;
+	animation: rotate-anim 1.2s linear infinite;
+	pointer-events: none;
+	overflow: hidden;
+}
+
+@keyframes rotate-anim {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}

@@ -1,19 +1,15 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
-import allComicsReducer from './reducers/all-comics/slice';
-import singleComicsReducer from './reducers/comics/slice';
-import userReducer from './reducers/user/slice';
-import favouriteReducer from './reducers/favourite/slice';
-import searchReducer from './reducers/search/slice';
-import historyReducer from './reducers/history/slice';
+import { comicsApi } from './api/comics-api';
+import { favouriteApi } from './api/favourite-api';
+import { historyApi } from './api/history-api';
+import userReducer from './reducers/user-slice';
 
 const rootReducer = combineReducers({
-	allComicsReducer,
-	singleComicsReducer,
-	userReducer,
-	favouriteReducer,
-	searchReducer,
-	historyReducer
+	[comicsApi.reducerPath]: comicsApi.reducer,
+	[favouriteApi.reducerPath]: favouriteApi.reducer,
+	[historyApi.reducerPath]: historyApi.reducer,
+	userReducer
 });
 
 export const setupStore = () => {
@@ -22,7 +18,11 @@ export const setupStore = () => {
 		middleware: getDefaultMiddleware =>
 			getDefaultMiddleware({
 				serializableCheck: false
-			})
+			}).concat([
+				comicsApi.middleware,
+				favouriteApi.middleware,
+				historyApi.middleware
+			])
 	});
 };
 

@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { LsUser, FsUser } from '../../../models/user';
+import { LsUser, FsUser } from '../../models/user';
 
 interface UserState {
 	user: FsUser | LsUser | null;

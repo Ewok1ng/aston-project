@@ -2,8 +2,11 @@ import React from 'react';
 
 import Routes from './routes/routes';
 import { useAuth } from './hooks';
+import { SearchContext } from './context/search-context';
 
 function App() {
+	const [searchValue, setSearchValue] = React.useState('');
+
 	const { auth } = useAuth();
 	React.useEffect(() => {
 		const unsub = auth();
@@ -15,7 +18,9 @@ function App() {
 
 	return (
 		<div className="app">
-			<Routes />
+			<SearchContext.Provider value={{ searchValue, setSearchValue }}>
+				<Routes />
+			</SearchContext.Provider>
 		</div>
 	);
 }

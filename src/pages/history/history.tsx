@@ -1,27 +1,29 @@
 import React from 'react';
-
 import classNames from 'classnames';
 
-import { useAppDispatch, useAppSelector } from '../../hooks';
 import {
-	fetchAllHistory,
-	removeHistory
-} from '../../store/reducers/history/action-creators';
-import { ItemHistory } from '../../components';
+	useFetchAllHistoryQuery,
+	useRemoveFromHistoryMutation
+} from '../../store/api/history-api';
+import { ItemHistory, Loader } from '../../components';
 
 import s from './history.module.css';
 
 export function History() {
-	const dispatch = useAppDispatch();
-	const { historyList } = useAppSelector(state => state.historyReducer);
-
-	React.useEffect(() => {
-		dispatch(fetchAllHistory());
-	}, []);
+	const {
+		data: historyList = [],
+		isLoading,
+		isFetching
+	} = useFetchAllHistoryQuery();
+	const [removeHistory] = useRemoveFromHistoryMutation();
 
 	const removeHistoryItem = (timestamp: string) => {
-		dispatch(removeHistory(timestamp));
+		removeHistory(timestamp);
 	};
+
+	if (isLoading || isFetching) {
+		return <Loader />;
+	}
 
 	return (
 		<>

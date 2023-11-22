@@ -2,57 +2,83 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
-import { Button } from '../button/button';
+import { FormatEnum, getImage } from '../../utils/images';
+import {
+	useAddToFavouriteMutation,
+	useRemoveFromFavouriteMutation
+} from '../../store/api/favourite-api';
+import { useAuth } from '../../hooks';
+import { Comics } from '../../models/comics';
+import { Button, Loader } from '../../components';
 
 import s from './item-card.module.css';
 import { HeartIcon } from './heart-icon';
 
 interface Props {
-	itemId: number;
-	title: string;
-	imageSrc: string;
-	isAuth: boolean;
+	comics: Comics;
 	isFavourite: boolean;
-	addToFavourite?: () => void;
-	removeFromFavourite: () => void;
 }
 
-export function ItemCard({
-	itemId,
-	title,
-	imageSrc,
-	isAuth,
-	isFavourite,
-	addToFavourite = () => {},
-	removeFromFavourite
-}: Props) {
+export function ItemCard({ comics, isFavourite }: Props) {
+	const { isAuth } = useAuth();
+	const [addFavourite, addResult] = useAddToFavouriteMutation();
+	const [removeFavourite, removeResult] = useRemoveFromFavouriteMutation();
+
+	const [isComicsFavourite, setIsComicsFavourite] = React.useState(false);
+
+	React.useEffect(() => {
+		setIsComicsFavourite(isFavourite);
+	}, []);
+
 	const onFavouriteClick = () => {
 		if (!isFavourite) {
 			addToFavourite();
 		} else {
 			removeFromFavourite();
 		}
+		setIsComicsFavourite(prevState => !prevState);
+	};
+
+	const addToFavourite = async () => {
+		await addFavourite(comics);
+	};
+
+	const removeFromFavourite = async () => {
+		await removeFavourite(comics);
 	};
 
 	return (
-		<li className={s.card} title={title}>
+		<li className={s.card} title={comics.title}>
 			<div className={s.content}>
-				<Link className={s.cardLink} replace to={`/comics/${itemId}`}>
+				<Link
+					className={s.cardLink}
+					replace
+					to={`/comics/${comics.id}`}
+				>
 					<div className={s.imageContainer}>
-						<img className={s.image} src={imageSrc} alt={title} />
+						<img
+							className={s.image}
+							src={getImage(comics, FormatEnum.portrait)}
+							alt={comics.title}
+						/>
 					</div>
 				</Link>
 				<div className={s.info}>
-					<h3 className={s.title}>{title}</h3>
+					<h3 className={s.title}>{comics.title}</h3>
 					<Button
 						className={classNames(s.favourite, {
-							[s.active]: isFavourite,
+							[s.active]: isComicsFavourite,
 							[s.visible]: isAuth
 						})}
 						buttonType="icon"
+						disabled={addResult.isLoading || removeResult.isLoading}
 						onClick={onFavouriteClick}
 					>
-						<HeartIcon className={s.icon} />
+						{addResult.isLoading || removeResult.isLoading ? (
+							<Loader className={s.loader} />
+						) : (
+							<HeartIcon className={s.icon} />
+						)}
 					</Button>
 				</div>
 			</div>

@@ -26,7 +26,7 @@
 - [x] Есть разделение на [умные](src/pages/main/main.tsx) и [глупые](src/components/button/button.tsx) компоненты.
 - [x] Есть рендеринг [списков](src/pages/main/main.tsx).
 - [x] Реализована хотя бы одна [форма](src/components/form/form.tsx).
-- [ ] Есть применение Контекст API.
+- [x] Есть применение Контекст API.
 - [ ] Есть применение предохранителя.
 - [x] Есть хотя бы один кастомный [хук](src/hooks/auth.ts).
 - [ ] Хотя бы несколько компонентов используют PropTypes.
@@ -38,8 +38,8 @@
 - [x] Используем Modern Redux with Redux [Toolkit](src/store/store.ts).
 - [x] Используем [слайсы](src/store/reducers/all-comics/slice.ts).
 - [ ] Есть хотя бы одна кастомная мидлвара.
-- [ ] Используется RTK Query.
-- [ ] Используется Transforming Responses.
+- [x] Используется RTK Query.
+- [x] Используется Transforming Responses.
 
 ---
 

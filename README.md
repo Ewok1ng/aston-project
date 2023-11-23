@@ -1,4 +1,5 @@
-# aston-project
+# aston-project 
+[![Actions](https://github.com/Ewok1ng/aston-project/actions/workflows/actions.yml/badge.svg)](https://github.com/Ewok1ng/aston-project/actions/workflows/actions.yml)
 
 - Предметная область: приложение комиксов вселенной Marvel.
 - Использованное API: [Marvel API](https://developer.marvel.com/docs)

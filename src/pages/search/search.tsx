@@ -3,7 +3,6 @@ import { useSearchParams } from 'react-router-dom';
 
 import { useFetchComicsByTitleQuery } from '../../store/api/comics-api';
 import { useFetchAllFavouriteQuery } from '../../store/api/favourite-api';
-import { SearchContext } from '../../context/search-context';
 
 import { ItemCard, Loader } from '../../components';
 
@@ -19,11 +18,6 @@ function Search() {
 	} = useFetchComicsByTitleQuery(searchName || '');
 
 	const { data: favouriteList = [] } = useFetchAllFavouriteQuery();
-	const { setSearchValue } = React.useContext(SearchContext);
-
-	React.useEffect(() => {
-		setSearchValue(searchName || '');
-	}, []);
 
 	const isComicsFavourite = (id: number) => {
 		return favouriteList.find(item => item.id === id) ? true : false;

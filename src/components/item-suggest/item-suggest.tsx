@@ -1,8 +1,7 @@
 import React from 'react';
-
 import { Link } from 'react-router-dom';
-
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 
 import s from './item-suggest.module.css';
 
@@ -30,3 +29,11 @@ export function ItemSuggest({ className, id, title, image, onClick }: Props) {
 		</li>
 	);
 }
+
+ItemSuggest.propTypes = {
+	className: PropTypes.string.isRequired,
+	id: PropTypes.number.isRequired,
+	title: PropTypes.string.isRequired,
+	image: PropTypes.string.isRequired,
+	onClick: PropTypes.func.isRequired
+};

@@ -5,7 +5,7 @@ import { ItemCard } from '../../components';
 
 import s from './favourite.module.css';
 
-export function Favourite() {
+function Favourite() {
 	const { data: favouriteList = [], isLoading } = useFetchAllFavouriteQuery();
 
 	if (isLoading) {
@@ -15,11 +15,22 @@ export function Favourite() {
 	return (
 		<>
 			<h2>Favourite comics</h2>
-			<ul className={s.items}>
-				{favouriteList.map(item => (
-					<ItemCard key={item.id} comics={item} isFavourite={true} />
-				))}
-			</ul>
+			{favouriteList.length === 0 && !isLoading && (
+				<span>There is nothing</span>
+			)}
+			{favouriteList.length > 0 && (
+				<ul className={s.items}>
+					{favouriteList.map(item => (
+						<ItemCard
+							key={item.id}
+							comics={item}
+							isFavourite={true}
+						/>
+					))}
+				</ul>
+			)}
 		</>
 	);
 }
+
+export default Favourite;

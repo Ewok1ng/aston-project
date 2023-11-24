@@ -6,7 +6,7 @@ import { Header } from '../../components';
 
 import s from './layout.module.css';
 
-export function Layout() {
+function Layout() {
 	return (
 		<div className={s.layout}>
 			<Header />
@@ -18,3 +18,5 @@ export function Layout() {
 		</div>
 	);
 }
+
+export default Layout;

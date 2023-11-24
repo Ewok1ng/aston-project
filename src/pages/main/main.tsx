@@ -7,7 +7,7 @@ import { Comics } from '../../models/comics';
 
 import s from './main.module.css';
 
-export function Main() {
+function Main() {
 	const {
 		data: comicsList = [],
 		isLoading,
@@ -38,3 +38,5 @@ export function Main() {
 		</>
 	);
 }
+
+export default Main;

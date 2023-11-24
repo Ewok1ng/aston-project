@@ -3,12 +3,13 @@ import { useSearchParams } from 'react-router-dom';
 
 import { useFetchComicsByTitleQuery } from '../../store/api/comics-api';
 import { useFetchAllFavouriteQuery } from '../../store/api/favourite-api';
+import { SearchContext } from '../../context/search-context';
 
 import { ItemCard, Loader } from '../../components';
 
 import s from './search.module.css';
 
-export function Search() {
+function Search() {
 	const [searchParams] = useSearchParams();
 	const searchName = searchParams.get('name');
 	const {
@@ -18,6 +19,11 @@ export function Search() {
 	} = useFetchComicsByTitleQuery(searchName || '');
 
 	const { data: favouriteList = [] } = useFetchAllFavouriteQuery();
+	const { setSearchValue } = React.useContext(SearchContext);
+
+	React.useEffect(() => {
+		setSearchValue(searchName || '');
+	}, []);
 
 	const isComicsFavourite = (id: number) => {
 		return favouriteList.find(item => item.id === id) ? true : false;
@@ -31,14 +37,20 @@ export function Search() {
 		<>
 			<h2>Search results for: {`"${searchName}"`}</h2>
 			<ul className={s.items}>
-				{comicsList.map(item => (
-					<ItemCard
-						key={item.id}
-						comics={item}
-						isFavourite={isComicsFavourite(item.id)}
-					/>
-				))}
+				{comicsList.length > 0 ? (
+					comicsList.map(item => (
+						<ItemCard
+							key={item.id}
+							comics={item}
+							isFavourite={isComicsFavourite(item.id)}
+						/>
+					))
+				) : (
+					<span>Nothing foud</span>
+				)}
 			</ul>
 		</>
 	);
 }
+
+export default Search;

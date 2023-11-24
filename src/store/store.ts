@@ -4,6 +4,7 @@ import { comicsApi } from './api/comics-api';
 import { favouriteApi } from './api/favourite-api';
 import { historyApi } from './api/history-api';
 import userReducer from './reducers/user-slice';
+import { listenerMiddleware } from './middlewares/user-middleware';
 
 const rootReducer = combineReducers({
 	[comicsApi.reducerPath]: comicsApi.reducer,
@@ -21,7 +22,8 @@ export const setupStore = () => {
 			}).concat([
 				comicsApi.middleware,
 				favouriteApi.middleware,
-				historyApi.middleware
+				historyApi.middleware,
+				listenerMiddleware.middleware
 			])
 	});
 };

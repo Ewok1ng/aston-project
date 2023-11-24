@@ -10,12 +10,11 @@ import './firebase';
 import reportWebVitals from './reportWebVitals';
 
 import App from './app';
-import { setupStore } from './store/store';
+import { store } from './store/store';
 
 const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement
 );
-const store = setupStore();
 
 root.render(
 	<React.StrictMode>

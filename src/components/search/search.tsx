@@ -23,7 +23,7 @@ export function Search() {
 	const { searchValue, setSearchValue } = React.useContext(SearchContext);
 	const [isSuggestVisible, setIsSuggestVisible] = React.useState(false);
 
-	const [trigger, { currentData = [], isLoading, isFetching }] =
+	const [trigger, { currentData, isLoading, isFetching }] =
 		useLazyFetchSuggestComicsByTitleQuery();
 	const [addHistory] = useAddToHistoryMutation();
 
@@ -122,7 +122,7 @@ export function Search() {
 				})}
 				ref={autocompleteRef}
 			>
-				{isLoading || isFetching ? (
+				{isLoading || isFetching || !currentData ? (
 					<Loader className={s.loader} />
 				) : (
 					<ul className={s.list}>

@@ -8,7 +8,7 @@ import { Form } from '../../components';
 
 import s from './login.module.css';
 
-export function Login() {
+function Login() {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const { isAuth, login } = useAuth();
@@ -38,3 +38,5 @@ export function Login() {
 		</div>
 	);
 }
+
+export default Login;

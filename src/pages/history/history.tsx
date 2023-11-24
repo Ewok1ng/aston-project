@@ -9,7 +9,7 @@ import { ItemHistory, Loader } from '../../components';
 
 import s from './history.module.css';
 
-export function History() {
+function History() {
 	const {
 		data: historyList = [],
 		isLoading,
@@ -47,3 +47,5 @@ export function History() {
 		</>
 	);
 }
+
+export default History;

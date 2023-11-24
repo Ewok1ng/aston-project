@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 
 import { SpinnerIcon } from './spinner-icon';
 
@@ -16,3 +17,7 @@ export function Loader({ className }: Props) {
 		</div>
 	);
 }
+
+Loader.propTypes = {
+	classNames: PropTypes.string
+};

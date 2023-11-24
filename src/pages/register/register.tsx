@@ -8,7 +8,7 @@ import { Form } from '../../components';
 
 import s from './register.module.css';
 
-export function Register() {
+function Register() {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const { isAuth, register } = useAuth();
@@ -37,3 +37,5 @@ export function Register() {
 		</div>
 	);
 }
+
+export default Register;

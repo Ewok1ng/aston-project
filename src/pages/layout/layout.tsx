@@ -3,13 +3,16 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 
 import { Header } from '../../components';
+import { useAuth } from '../../hooks';
 
 import s from './layout.module.css';
 
-export function Layout() {
+function Layout() {
+	const { isAuth, logout } = useAuth();
+
 	return (
 		<div className={s.layout}>
-			<Header />
+			<Header isAuth={isAuth} logout={logout} />
 			<main className={s.main}>
 				<div className="container">
 					<Outlet />
@@ -18,3 +21,5 @@ export function Layout() {
 		</div>
 	);
 }
+
+export default Layout;

@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import PropTypes from 'prop-types';
 
 import { validationSchema } from '../../utils/validation-schema';
 
@@ -69,3 +70,8 @@ export function Form({ text, onSubmitForm }: Props) {
 		</form>
 	);
 }
+
+Form.propTypes = {
+	text: PropTypes.string.isRequired,
+	onSubmitForm: PropTypes.func.isRequired
+};

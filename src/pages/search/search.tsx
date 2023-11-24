@@ -8,7 +8,7 @@ import { ItemCard, Loader } from '../../components';
 
 import s from './search.module.css';
 
-export function Search() {
+function Search() {
 	const [searchParams] = useSearchParams();
 	const searchName = searchParams.get('name');
 	const {
@@ -31,14 +31,20 @@ export function Search() {
 		<>
 			<h2>Search results for: {`"${searchName}"`}</h2>
 			<ul className={s.items}>
-				{comicsList.map(item => (
-					<ItemCard
-						key={item.id}
-						comics={item}
-						isFavourite={isComicsFavourite(item.id)}
-					/>
-				))}
+				{comicsList.length > 0 ? (
+					comicsList.map(item => (
+						<ItemCard
+							key={item.id}
+							comics={item}
+							isFavourite={isComicsFavourite(item.id)}
+						/>
+					))
+				) : (
+					<span>Nothing foud</span>
+				)}
 			</ul>
 		</>
 	);
 }
+
+export default Search;

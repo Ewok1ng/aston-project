@@ -4,6 +4,7 @@ import { comicsApi } from './api/comics-api';
 import { favouriteApi } from './api/favourite-api';
 import { historyApi } from './api/history-api';
 import userReducer from './reducers/user-slice';
+import { listenerMiddleware } from './middlewares/user-middleware';
 
 const rootReducer = combineReducers({
 	[comicsApi.reducerPath]: comicsApi.reducer,
@@ -12,7 +13,7 @@ const rootReducer = combineReducers({
 	userReducer
 });
 
-export const setupStore = () => {
+const setupStore = () => {
 	return configureStore({
 		reducer: rootReducer,
 		middleware: getDefaultMiddleware =>
@@ -21,10 +22,13 @@ export const setupStore = () => {
 			}).concat([
 				comicsApi.middleware,
 				favouriteApi.middleware,
-				historyApi.middleware
+				historyApi.middleware,
+				listenerMiddleware.middleware
 			])
 	});
 };
+
+export const store = setupStore();
 
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof setupStore>;

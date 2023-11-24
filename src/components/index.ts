@@ -7,3 +7,4 @@ export { ItemSuggest } from './item-suggest/item-suggest';
 export { Button } from './button/button';
 export { Form } from './form/form';
 export { Loader } from './loader/loader';
+export { Fallback } from './fallback/fallback';

@@ -2,16 +2,17 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 
-import { useAuth } from '../../hooks';
-
 import { Search, Logo, Button } from '../../components';
 
 import { ExitIcon } from './exit-icon';
 import s from './header.module.css';
 
-export function Header() {
-	const { isAuth, logout } = useAuth();
+interface Props {
+	isAuth: boolean;
+	logout: () => void;
+}
 
+export function Header({ isAuth, logout }: Props) {
 	const isLinkActive = ({ isActive }: { isActive: boolean }) =>
 		classNames(s.link, {
 			[s.active]: isActive

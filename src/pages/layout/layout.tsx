@@ -1,23 +1,33 @@
-import React from 'react';
-
+import React, { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 
-import { Header } from '../../components';
-import { useAuth } from '../../hooks';
+import { Header, Loader } from '../../components';
+import { useAppSelector, useAuth } from '../../hooks';
 
 import s from './layout.module.css';
 
 function Layout() {
 	const { isAuth, logout } = useAuth();
+	const isUserLoading = useAppSelector(state => state.userReducer.isLoading);
 
 	return (
 		<div className={s.layout}>
-			<Header isAuth={isAuth} logout={logout} />
-			<main className={s.main}>
-				<div className="container">
-					<Outlet />
-				</div>
-			</main>
+			{isUserLoading ? (
+				<Loader className={s.loader} />
+			) : (
+				<>
+					<Header isAuth={isAuth} logout={logout} />
+					<main className={s.main}>
+						<div className="container">
+							<Suspense fallback={<Loader />}>
+								<Outlet />
+							</Suspense>
+						</div>
+					</main>
+				</>
+			)}
+			<Toaster />
 		</div>
 	);
 }

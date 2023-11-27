@@ -1,15 +1,19 @@
 import React from 'react';
 
 import { useFetchAllFavouriteQuery } from '../../store/api/favourite-api';
-import { ItemCard } from '../../components';
+import { useAuth } from '../../hooks';
+import { ItemCard, Loader } from '../../components';
 
 import s from './favourite.module.css';
 
 function Favourite() {
-	const { data: favouriteList = [], isLoading } = useFetchAllFavouriteQuery();
+	const { user } = useAuth();
+	const { data: favouriteList = [], isLoading } = useFetchAllFavouriteQuery(
+		user?.email
+	);
 
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return <Loader />;
 	}
 
 	return (

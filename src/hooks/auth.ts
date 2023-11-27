@@ -1,5 +1,9 @@
 import { auth } from '../firebase';
-import { removeUser, setUser } from '../store/reducers/user-slice';
+import {
+	removeUser,
+	setUser,
+	setIsLoading
+} from '../store/reducers/user-slice';
 import { fbRegister, fbLogin } from '../services/firebase-auth';
 import { logoutlsUser, lsLogin, lsRegistration } from '../services/ls-auth';
 
@@ -16,6 +20,7 @@ export function useAuth() {
 					if (user) {
 						dispatch(setUser(user));
 					}
+					dispatch(setIsLoading(false));
 				});
 			}
 			case 'ls':
@@ -28,6 +33,7 @@ export function useAuth() {
 						if (user) {
 							dispatch(setUser(JSON.parse(user)));
 						}
+						dispatch(setIsLoading(false));
 					}
 				}
 				return;
@@ -75,6 +81,7 @@ export function useAuth() {
 
 	return {
 		isAuth: !!user,
+		user: user,
 		auth: authUser,
 		login: loginUser,
 		register: registerUser,

@@ -27,14 +27,12 @@ function Login() {
 		}
 	};
 
-	// TODO Loader
-
 	return (
 		<div className={s.login}>
 			<h2 className={s.title}>Login</h2>
 			<Form text="Login" onSubmitForm={onSubmitForm} />
 
-			<Link to="/register">Registration</Link>
+			<Link to="/signup">Registration</Link>
 		</div>
 	);
 }

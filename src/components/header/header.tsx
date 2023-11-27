@@ -4,7 +4,8 @@ import classNames from 'classnames';
 
 import { Search, Logo, Button } from '../../components';
 
-import { ExitIcon } from './exit-icon';
+import { ExitIcon } from '../icons/exit-icon';
+
 import s from './header.module.css';
 
 interface Props {

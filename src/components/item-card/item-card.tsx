@@ -11,8 +11,9 @@ import { useAuth } from '../../hooks';
 import { Comics } from '../../models/comics';
 import { Button, Loader } from '../../components';
 
+import { HeartIcon } from '../icons/heart-icon';
+
 import s from './item-card.module.css';
-import { HeartIcon } from './heart-icon';
 
 interface Props {
 	comics: Comics;
@@ -20,7 +21,7 @@ interface Props {
 }
 
 export function ItemCard({ comics, isFavourite }: Props) {
-	const { isAuth } = useAuth();
+	const { isAuth, user } = useAuth();
 	const [addFavourite, addResult] = useAddToFavouriteMutation();
 	const [removeFavourite, removeResult] = useRemoveFromFavouriteMutation();
 
@@ -40,11 +41,11 @@ export function ItemCard({ comics, isFavourite }: Props) {
 	};
 
 	const addToFavourite = async () => {
-		await addFavourite(comics);
+		await addFavourite({ email: user?.email, comics });
 	};
 
 	const removeFromFavourite = async () => {
-		await removeFavourite(comics);
+		await removeFavourite({ email: user?.email, comics });
 	};
 
 	return (

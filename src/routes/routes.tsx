@@ -1,9 +1,8 @@
-import React, { Suspense, lazy } from 'react';
+import React, { lazy } from 'react';
 
 import { Route, Routes } from 'react-router-dom';
 
 import { useAuth } from '../hooks';
-import { Loader } from '../components';
 
 import { Private } from './private';
 
@@ -20,20 +19,18 @@ export default function PublicRoutes() {
 	const { isAuth } = useAuth();
 
 	return (
-		<Suspense fallback={<Loader />}>
-			<Routes>
-				<Route path="/" element={<Layout />}>
-					<Route index element={<Main />} />
-					<Route path="comics/:comicsId" element={<Comics />} />
-					<Route path="search" element={<Search />} />
-					<Route path="signup" element={<Register />} />
-					<Route path="signin" element={<Login />} />
-					<Route element={<Private isAuth={isAuth} />}>
-						<Route path="history" element={<History />} />
-						<Route path="favourite" element={<Favourite />} />
-					</Route>
+		<Routes>
+			<Route path="/" element={<Layout />}>
+				<Route index element={<Main />} />
+				<Route path="comics/:comicsId" element={<Comics />} />
+				<Route path="search" element={<Search />} />
+				<Route path="signup" element={<Register />} />
+				<Route path="signin" element={<Login />} />
+				<Route element={<Private isAuth={isAuth} />}>
+					<Route path="history" element={<History />} />
+					<Route path="favourite" element={<Favourite />} />
 				</Route>
-			</Routes>
-		</Suspense>
+			</Route>
+		</Routes>
 	);
 }

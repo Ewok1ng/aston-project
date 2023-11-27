@@ -4,10 +4,12 @@ import { LsUser, FsUser } from '../../models/user';
 
 interface UserState {
 	user: FsUser | LsUser | null;
+	isLoading: boolean;
 }
 
 const initialState: UserState = {
-	user: null
+	user: null,
+	isLoading: true
 };
 
 export const userSlice = createSlice({
@@ -19,9 +21,12 @@ export const userSlice = createSlice({
 		},
 		removeUser: state => {
 			state.user = null;
+		},
+		setIsLoading: (state, action: PayloadAction<boolean>) => {
+			state.isLoading = action.payload;
 		}
 	}
 });
 
-export const { setUser, removeUser } = userSlice.actions;
+export const { setUser, removeUser, setIsLoading } = userSlice.actions;
 export default userSlice.reducer;

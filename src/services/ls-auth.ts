@@ -1,3 +1,5 @@
+import toast from 'react-hot-toast';
+
 import { LsUser } from '../models/user';
 
 export function lsRegistration(email: string, password: string): LsUser | null {
@@ -11,6 +13,7 @@ export function lsRegistration(email: string, password: string): LsUser | null {
 	const existingUser = localStorage.getItem(email);
 
 	if (existingUser) {
+		toast.error('LocalStorage: Error (auth/email-already-in-use).');
 		return null;
 	}
 
@@ -32,6 +35,7 @@ export function lsLogin(email: string, password: string): LsUser | null {
 		}
 	}
 
+	toast.error('LocalStorage: Error (auth/invalid-credentials).');
 	return null;
 }
 

@@ -4,23 +4,23 @@ import { Link } from 'react-router-dom';
 import { Button } from '../button/button';
 import { formatTimestamp } from '../../utils/format-date';
 import { SearchContext } from '../../context/search-context';
+import { HistoryItem } from '../../models/history';
 
-import { ClearIcon } from './clear-icon';
+import { ClearIcon } from '../icons/clear-icon';
+
 import s from './item-history.module.css';
 
 interface Props {
 	rowClassName: string;
 	colClassName: string;
-	timestamp: string;
-	name: string;
-	removeHistoryItem: (timestamp: string) => void;
+	historyItem: HistoryItem;
+	removeHistoryItem: (history: HistoryItem) => void;
 }
 
 export function ItemHistory({
 	rowClassName,
 	colClassName,
-	timestamp,
-	name,
+	historyItem,
 	removeHistoryItem
 }: Props) {
 	const { setSearchValue } = React.useContext(SearchContext);
@@ -31,25 +31,25 @@ export function ItemHistory({
 				<Button
 					className={s.button}
 					buttonType="icon"
-					onClick={() => removeHistoryItem(timestamp)}
+					onClick={() => removeHistoryItem(historyItem)}
 				>
 					<ClearIcon />
 				</Button>
 			</span>
 			<Link
-				onClick={() => setSearchValue(name)}
-				to={`/search?name=${name}`}
+				onClick={() => setSearchValue(historyItem.name)}
+				to={`/search?name=${historyItem.name}`}
 				className={colClassName}
 			>
-				{formatTimestamp(timestamp)}
+				{formatTimestamp(historyItem.timestamp)}
 			</Link>
 
 			<Link
-				onClick={() => setSearchValue(name)}
-				to={`/search?name=${name}`}
+				onClick={() => setSearchValue(historyItem.name)}
+				to={`/search?name=${historyItem.name}`}
 				className={colClassName}
 			>
-				{name}
+				{historyItem.name}
 			</Link>
 		</div>
 	);

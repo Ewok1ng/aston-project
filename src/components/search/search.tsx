@@ -10,12 +10,13 @@ import { FormatEnum, getImage } from '../../utils/images';
 import { useAuth } from '../../hooks';
 import { Button, ItemSuggest, Loader } from '../../components';
 
+import { SearchIcon } from '../icons/search-icon';
+
 import s from './search.module.css';
-import { SearchIcon } from './search-icon';
 
 export function Search() {
 	const navigate = useNavigate();
-	const { isAuth } = useAuth();
+	const { isAuth, user } = useAuth();
 
 	const autocompleteRef = React.useRef<null | HTMLDivElement>(null);
 	const inputRef = React.useRef<null | HTMLInputElement>(null);
@@ -73,7 +74,7 @@ export function Search() {
 
 	const saveToHistory = () => {
 		if (isAuth) {
-			addHistory(searchValue);
+			addHistory({ email: user?.email, name: searchValue });
 		}
 	};
 
@@ -101,6 +102,7 @@ export function Search() {
 			<div className={s.container}>
 				<input
 					className={s.input}
+					placeholder='Enter comics name, example: "Spider-man"'
 					ref={inputRef}
 					type="search"
 					value={searchValue}

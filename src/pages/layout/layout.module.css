@@ -1,3 +1,14 @@
+.layout {
+	min-height: 100vh;
+
+	display: flex;
+	flex-direction: column;
+}
+
+.loader {
+	flex-grow: 1;
+}
+
 .main {
 	min-height: calc(100vh - 136px);
 

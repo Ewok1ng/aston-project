@@ -1,28 +1,47 @@
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
-import { deleteDoc, doc, getDocs, setDoc } from 'firebase/firestore';
+import {
+	arrayRemove,
+	arrayUnion,
+	doc,
+	getDoc,
+	updateDoc
+} from 'firebase/firestore';
 
 import { Comics } from '../../models/comics';
-import { favouriteCollection } from '../../firebase';
+import { db } from '../../firebase';
 import { getAuthUser } from '../../services/ls-auth';
 import { getLsData, setLsData } from '../../services/ls-data';
+import { userConverter } from '../../utils/user-converter';
 
 export const favouriteApi = createApi({
 	baseQuery: fakeBaseQuery(),
 	reducerPath: 'favouriteApi',
 	tagTypes: ['Favourite'],
+	refetchOnMountOrArgChange: true,
 	endpoints: build => ({
-		fetchAllFavourite: build.query<Comics[], void>({
-			async queryFn() {
+		fetchAllFavourite: build.query<Comics[], string | null | undefined>({
+			async queryFn(email) {
 				switch (process.env.REACT_APP_REMOTE_STORE) {
 					case 'firebase':
 						try {
-							const favSnapshot =
-								await getDocs(favouriteCollection);
-							const favList = favSnapshot.docs.map(doc =>
-								doc.data()
-							);
+							if (!email) {
+								return { data: [] };
+							}
 
-							return { data: favList };
+							const userRef = doc(
+								db,
+								'users',
+								email
+							).withConverter(userConverter);
+							const user = await getDoc(userRef);
+
+							const userData = user.data();
+
+							if (userData) {
+								return { data: userData.favourite };
+							}
+
+							return { data: [] };
 						} catch (e) {
 							return { error: e };
 						}
@@ -46,18 +65,27 @@ export const favouriteApi = createApi({
 			providesTags: ['Favourite']
 		}),
 		addToFavourite: build.mutation({
-			async queryFn(comics: Comics) {
+			async queryFn(args: {
+				email: string | null | undefined;
+				comics: Comics;
+			}) {
 				switch (process.env.REACT_APP_REMOTE_STORE) {
 					case 'firebase':
 						try {
-							const favouriteRef = doc(
-								favouriteCollection,
-								comics.id.toString()
-							);
+							if (!args.email) {
+								return { data: [] };
+							}
 
-							await setDoc(favouriteRef, comics);
+							const userRef = doc(
+								db,
+								'users',
+								args.email
+							).withConverter(userConverter);
 
-							return { data: comics };
+							await updateDoc(userRef, {
+								favourite: arrayUnion(args.comics)
+							});
+							return { data: args.comics };
 						} catch (e) {
 							return { error: e };
 						}
@@ -67,11 +95,11 @@ export const favouriteApi = createApi({
 							const userData = getLsData(authUser);
 
 							if (userData) {
-								userData.favouriteList.push(comics);
+								userData.favouriteList.push(args.comics);
 								setLsData(authUser, userData);
 							}
 
-							return { data: comics };
+							return { data: args.comics };
 						} catch (e) {
 							return { error: e };
 						}
@@ -82,17 +110,28 @@ export const favouriteApi = createApi({
 			invalidatesTags: ['Favourite']
 		}),
 		removeFromFavourite: build.mutation({
-			async queryFn(comics: Comics) {
+			async queryFn(args: {
+				email: string | null | undefined;
+				comics: Comics;
+			}) {
 				switch (process.env.REACT_APP_REMOTE_STORE) {
 					case 'firebase':
 						try {
-							const favouriteRef = doc(
-								favouriteCollection,
-								comics.id.toString()
-							);
-							await deleteDoc(favouriteRef);
+							if (!args.email) {
+								return { data: [] };
+							}
 
-							return { data: comics };
+							const userRef = doc(
+								db,
+								'users',
+								args.email
+							).withConverter(userConverter);
+
+							await updateDoc(userRef, {
+								favourite: arrayRemove(args.comics)
+							});
+
+							return { data: args.comics };
 						} catch (e) {
 							return { error: e };
 						}
@@ -104,12 +143,12 @@ export const favouriteApi = createApi({
 							if (userData) {
 								userData.favouriteList =
 									userData.favouriteList.filter(
-										item => item.id !== comics.id
+										item => item.id !== args.comics.id
 									);
 								setLsData(authUser, userData);
 							}
 
-							return { data: comics };
+							return { data: args.comics };
 						} catch (e) {
 							return { error: e };
 						}

@@ -1,29 +1,48 @@
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { deleteDoc, doc, getDocs, setDoc } from 'firebase/firestore';
+import {
+	arrayRemove,
+	arrayUnion,
+	doc,
+	getDoc,
+	updateDoc
+} from 'firebase/firestore';
 
 import { HistoryItem } from '../../models/history';
-import { historyCollection } from '../../firebase';
+import { db } from '../../firebase';
 import { getAuthUser } from '../../services/ls-auth';
 import { getLsData, setLsData } from '../../services/ls-data';
+import { userConverter } from '../../utils/user-converter';
 
 export const historyApi = createApi({
 	baseQuery: fakeBaseQuery(),
 	reducerPath: 'historyApi',
 	tagTypes: ['History'],
+	refetchOnMountOrArgChange: true,
 	endpoints: build => ({
-		fetchAllHistory: build.query<HistoryItem[], void>({
-			async queryFn() {
+		fetchAllHistory: build.query<HistoryItem[], string | null | undefined>({
+			async queryFn(email) {
 				switch (process.env.REACT_APP_REMOTE_STORE) {
 					case 'firebase':
 						try {
-							const historySnapshot =
-								await getDocs(historyCollection);
-							const historyList = historySnapshot.docs.map(doc =>
-								doc.data()
-							);
+							if (!email) {
+								return { data: [] };
+							}
 
-							return { data: historyList };
+							const userRef = doc(
+								db,
+								'users',
+								email
+							).withConverter(userConverter);
+							const user = await getDoc(userRef);
+
+							const userData = user.data();
+
+							if (userData) {
+								return { data: userData.history };
+							}
+
+							return { data: [] };
 						} catch (e) {
 							return { error: e };
 						}
@@ -47,20 +66,32 @@ export const historyApi = createApi({
 			providesTags: ['History']
 		}),
 		addToHistory: build.mutation({
-			async queryFn(name: string) {
+			async queryFn(args: {
+				email: string | null | undefined;
+				name: string;
+			}) {
 				const date = new Date().toJSON();
 				const history = {
 					timestamp: date,
-					name
+					name: args.name
 				};
 
 				switch (process.env.REACT_APP_REMOTE_STORE) {
 					case 'firebase':
 						try {
-							const historyRef = doc(historyCollection, date);
+							if (!args.email) {
+								return { data: [] };
+							}
 
-							await setDoc(historyRef, history);
+							const userRef = doc(
+								db,
+								'users',
+								args.email
+							).withConverter(userConverter);
 
+							await updateDoc(userRef, {
+								history: arrayUnion(history)
+							});
 							return { data: history };
 						} catch (e) {
 							return { error: e };
@@ -86,17 +117,28 @@ export const historyApi = createApi({
 			invalidatesTags: ['History']
 		}),
 		removeFromHistory: build.mutation({
-			async queryFn(timestamp: string) {
+			async queryFn(args: {
+				email: string | null | undefined;
+				historyItem: HistoryItem;
+			}) {
 				switch (process.env.REACT_APP_REMOTE_STORE) {
 					case 'firebase':
 						try {
-							const historyRef = doc(
-								historyCollection,
-								timestamp
-							);
-							await deleteDoc(historyRef);
+							if (!args.email) {
+								return { data: [] };
+							}
 
-							return { data: timestamp };
+							const userRef = doc(
+								db,
+								'users',
+								args.email
+							).withConverter(userConverter);
+
+							await updateDoc(userRef, {
+								history: arrayRemove(args.historyItem)
+							});
+
+							return { data: args.historyItem };
 						} catch (e) {
 							return { error: e };
 						}
@@ -108,17 +150,19 @@ export const historyApi = createApi({
 							if (userData) {
 								userData.historyList =
 									userData.historyList.filter(
-										item => item.timestamp !== timestamp
+										item =>
+											item.timestamp !==
+											args.historyItem.timestamp
 									);
 								setLsData(authUser, userData);
 							}
 
-							return { data: timestamp };
+							return { data: args.historyItem };
 						} catch (e) {
 							return { error: e };
 						}
 					default:
-						return { data: '' };
+						return { data: {} };
 				}
 			},
 			invalidatesTags: ['History']

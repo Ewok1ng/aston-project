@@ -5,6 +5,8 @@ import { useFetchAllFavouriteQuery } from '../../store/api/favourite-api';
 import { Loader, ItemCard } from '../../components';
 import { Comics } from '../../models/comics';
 
+import { useAuth } from '../../hooks';
+
 import s from './main.module.css';
 
 function Main() {
@@ -13,7 +15,8 @@ function Main() {
 		isLoading,
 		isFetching
 	} = useFetchAllComicsQuery();
-	const { data: favouriteList = [] } = useFetchAllFavouriteQuery();
+	const { user } = useAuth();
+	const { data: favouriteList = [] } = useFetchAllFavouriteQuery(user?.email);
 
 	const isComicsFavourite = (id: number) => {
 		return favouriteList.find(item => item.id === id) ? true : false;

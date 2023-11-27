@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-import { SpinnerIcon } from './spinner-icon';
+import { SpinnerIcon } from '../icons/spinner-icon';
 
 import s from './loader.module.css';
 
@@ -12,8 +12,8 @@ interface Props {
 
 export function Loader({ className }: Props) {
 	return (
-		<div className={s.loader}>
-			<SpinnerIcon className={classNames(s.spinner, className)} />
+		<div className={classNames(s.loader, className)}>
+			<SpinnerIcon className={s.spinner} />
 		</div>
 	);
 }

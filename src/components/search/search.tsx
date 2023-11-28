@@ -101,6 +101,7 @@ export function Search() {
 		<div className={s.search}>
 			<div className={s.container}>
 				<input
+					data-cy="search"
 					className={s.input}
 					placeholder='Enter comics name, example: "Spider-man"'
 					ref={inputRef}
@@ -127,7 +128,7 @@ export function Search() {
 				{isLoading || isFetching || !currentData ? (
 					<Loader className={s.loader} />
 				) : (
-					<ul className={s.list}>
+					<ul className={s.list} data-cy="suggest-list">
 						{currentData.map(item => (
 							<ItemSuggest
 								className={s.item}

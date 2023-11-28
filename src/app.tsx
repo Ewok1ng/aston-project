@@ -10,6 +10,15 @@ function App() {
 	const [searchValue, setSearchValue] = React.useState('');
 
 	const { auth } = useAuth();
+
+	const contextValue = React.useMemo(
+		() => ({
+			searchValue,
+			setSearchValue
+		}),
+		[searchValue, setSearchValue]
+	);
+
 	React.useEffect(() => {
 		const unsub = auth();
 
@@ -21,7 +30,7 @@ function App() {
 	return (
 		<ErrorBoundary FallbackComponent={Fallback}>
 			<div className="app">
-				<SearchContext.Provider value={{ searchValue, setSearchValue }}>
+				<SearchContext.Provider value={contextValue}>
 					<Routes />
 				</SearchContext.Provider>
 			</div>

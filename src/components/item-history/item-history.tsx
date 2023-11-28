@@ -25,27 +25,32 @@ export function ItemHistory({
 }: Props) {
 	const { setSearchValue } = React.useContext(SearchContext);
 
+	const onClickHistoryItem = () => setSearchValue(historyItem.name);
+	const onRemoveHistoryItem = () => removeHistoryItem(historyItem);
+
+	const formattedDate = formatTimestamp(historyItem.timestamp);
+
 	return (
 		<div className={rowClassName}>
 			<span className={colClassName}>
 				<Button
 					className={s.button}
 					buttonType="icon"
-					onClick={() => removeHistoryItem(historyItem)}
+					onClick={onRemoveHistoryItem}
 				>
 					<ClearIcon />
 				</Button>
 			</span>
 			<Link
-				onClick={() => setSearchValue(historyItem.name)}
+				onClick={onClickHistoryItem}
 				to={`/search?name=${historyItem.name}`}
 				className={colClassName}
 			>
-				{formatTimestamp(historyItem.timestamp)}
+				{formattedDate}
 			</Link>
 
 			<Link
-				onClick={() => setSearchValue(historyItem.name)}
+				onClick={onClickHistoryItem}
 				to={`/search?name=${historyItem.name}`}
 				className={colClassName}
 			>

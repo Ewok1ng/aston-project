@@ -24,6 +24,7 @@ function Comics() {
 				<div className={s.thumbnailContainer}>
 					<img
 						className={s.thumbnail}
+						data-cy="comics-thumnail"
 						src={`${data.thumbnail.path}.${data.thumbnail.extension}`}
 						alt={data.title}
 					/>

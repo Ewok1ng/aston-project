@@ -16,7 +16,12 @@ interface Props {
 export function ItemSuggest({ className, id, title, image, onClick }: Props) {
 	return (
 		<li key={id} className={classNames(s.item, className)}>
-			<Link className={s.link} to={`/comics/${id}`} onClick={onClick}>
+			<Link
+				className={s.link}
+				data-cy="suggest-link"
+				to={`/comics/${id}`}
+				onClick={onClick}
+			>
 				<img
 					className={s.image}
 					width={50}

@@ -6,7 +6,8 @@ module.exports = {
 		'plugin:react/recommended',
 		'plugin:@typescript-eslint/eslint-recommended',
 		'plugin:@typescript-eslint/recommended',
-		'plugin:storybook/recommended'
+		'plugin:storybook/recommended',
+		'plugin:cypress/recommended'
 	],
 	parser: '@typescript-eslint/parser', // Specifies the ESLint parser
 	env: {

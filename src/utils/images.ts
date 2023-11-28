@@ -5,7 +5,7 @@ export enum FormatEnum {
 	square
 }
 
-export const getImage = (item: Comics, format: FormatEnum) => {
+export const getImage = (item: Comics, format: FormatEnum): string => {
 	switch (format) {
 		case FormatEnum.portrait:
 			return `${item.thumbnail.path}/portrait_uncanny.${item.thumbnail.extension}`;

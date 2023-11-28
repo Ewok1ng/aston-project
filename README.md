@@ -20,7 +20,7 @@
 
 ### 1 уровень (обязательный - необходимый минимум)
 
-- [ ] Реализованы Требования к функциональности.
+- [x] Реализованы Требования к функциональности.
 
 #### React
 
@@ -51,7 +51,18 @@
 - [x] Подключен storybook и созданы два, три сториса с knobs, которые показывают разные состояния компонента: [Form](src/components/form/form.stories.tsx), [Header](src/components/header/header.stories.tsx), [ItemCard](src/components/item-card/item-card.stories.tsx), [ItemSuggest](src/components/item-suggest/item-suggest.stories.tsx).
 - [x] Использвуется LS + Firebase: [auth](src/hooks/auth.ts), [favourite](src/store/api/favourite-api.ts), [history](src/store/api/history-api.ts)
 - [x] Настроен CI/CD: [actions.yml](.github/workflows/actions.yml)
-- [ ] Реализована виртуализация списков
-- [ ] Используются мемоизированные селекторы (createSelector).
-- [ ] Используется нормализованная структура стейта (createEntityAdapter).
-- [ ] Тесты через jest, react-testing-library
+- [x] Тесты через react-testing-library ([button](src/components/button/button.test.tsx)), cypress ([тест кейс для гостя](/cypress/e2e/1-guest/guest.cy.ts))
+
+---
+
+### Дополнительные библиотеки, которые использовались
+
+- classnames для удобства работы с css modules
+- react-hook-form и yup для валидации данных [формы](src/components/form/form.tsx)
+- moment для удобного форматирования [даты](src/utils/format-date.ts)
+
+---
+
+### Deploy
+
+[link](https://aston-project.vercel.app/)

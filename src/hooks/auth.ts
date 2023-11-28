@@ -4,13 +4,14 @@ import {
 	setUser,
 	setIsLoading
 } from '../store/reducers/user-slice';
+import { userSelector } from '../store/selectors';
 import { fbRegister, fbLogin } from '../services/firebase-auth';
 import { logoutlsUser, lsLogin, lsRegistration } from '../services/ls-auth';
 
 import { useAppDispatch, useAppSelector } from './redux';
 
 export function useAuth() {
-	const { user } = useAppSelector(state => state.userReducer);
+	const user = useAppSelector(userSelector.user);
 	const dispatch = useAppDispatch();
 
 	const authUser = () => {

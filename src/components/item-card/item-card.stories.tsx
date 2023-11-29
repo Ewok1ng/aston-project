@@ -52,15 +52,7 @@ const meta: Meta<typeof ItemCard> = {
 };
 
 export const Default: Story = {
-	args: {
-		isFavourite: false
-	}
-};
-
-export const Favourite: Story = {
-	args: {
-		isFavourite: true
-	}
+	args: {}
 };
 
 export default meta;

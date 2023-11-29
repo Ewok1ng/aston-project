@@ -25,11 +25,7 @@ function Favourite() {
 			{favouriteList.length > 0 && (
 				<ul className={s.items}>
 					{favouriteList.map(item => (
-						<ItemCard
-							key={item.id}
-							comics={item}
-							isFavourite={true}
-						/>
+						<ItemCard key={item.id} comics={item} />
 					))}
 				</ul>
 			)}

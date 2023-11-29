@@ -45,34 +45,3 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
-
-.favourite {
-	opacity: 0;
-	visibility: hidden;
-}
-
-.icon {
-	fill: none;
-}
-
-.icon path {
-	stroke: #202020;
-}
-
-.active .icon {
-	fill: #ec1d24;
-}
-
-.active .icon path {
-	stroke: #ec1d24;
-}
-
-.visible {
-	opacity: 1;
-	visibility: visible;
-}
-
-.loader {
-	width: 24px !important;
-	height: 24px !important;
-}

@@ -14,6 +14,7 @@ const Favourite = lazy(() => import('../pages/favourite/favourite'));
 const Register = lazy(() => import('../pages/register/register'));
 const Login = lazy(() => import('../pages/login/login'));
 const Search = lazy(() => import('../pages/search/search'));
+const NotFound = lazy(() => import('../pages/not-found/not-found'));
 
 export default function PublicRoutes() {
 	const { isAuth } = useAuth();
@@ -26,6 +27,7 @@ export default function PublicRoutes() {
 				<Route path="search" element={<Search />} />
 				<Route path="signup" element={<Register />} />
 				<Route path="signin" element={<Login />} />
+				<Route path="*" element={<NotFound />} />
 				<Route element={<Private isAuth={isAuth} />}>
 					<Route path="history" element={<History />} />
 					<Route path="favourite" element={<Favourite />} />

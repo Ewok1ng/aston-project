@@ -3,20 +3,37 @@ import { useParams } from 'react-router-dom';
 
 import { useFetchComicsByIdQuery } from '../../store/api/comics-api';
 import { formateDate } from '../../utils/format-date';
-import { Loader } from '../../components';
+import { useAuth, useFavourite } from '../../hooks';
+import { Loader, FavouriteButton } from '../../components';
 
 import s from './comics.module.css';
 
 function Comics() {
 	const { comicsId } = useParams();
+	const { isAuth } = useAuth();
+	const { isFavourite, addToFavourite, removeFromFavourite, isDisabled } =
+		useFavourite();
 
-	const { data, isLoading } = useFetchComicsByIdQuery(comicsId || '');
+	const { data: comics, isLoading } = useFetchComicsByIdQuery(comicsId || '');
 
-	if (isLoading || !data) {
+	const [isComicsFavourite, setIsComicsFavourite] = React.useState(
+		isFavourite(Number(comicsId))
+	);
+
+	const onFavouriteClick = () => {
+		if (!isComicsFavourite) {
+			addToFavourite(comics);
+		} else {
+			removeFromFavourite(comics);
+		}
+		setIsComicsFavourite(prevState => !prevState);
+	};
+
+	if (isLoading || !comics) {
 		return <Loader />;
 	}
 
-	const saleDate = data.onSaleDate ? formateDate(data.onSaleDate) : '-';
+	const saleDate = comics.onSaleDate ? formateDate(comics.onSaleDate) : '-';
 
 	return (
 		<div className={s.container}>
@@ -25,27 +42,33 @@ function Comics() {
 					<img
 						className={s.thumbnail}
 						data-cy="comics-thumnail"
-						src={`${data.thumbnail.path}.${data.thumbnail.extension}`}
-						alt={data.title}
+						src={`${comics.thumbnail.path}.${comics.thumbnail.extension}`}
+						alt={comics.title}
 					/>
 				</div>
 				<div className={s.info}>
-					<h2 className={s.title}>{data.title}</h2>
+					<h2 className={s.title}>{comics.title}</h2>
+					<FavouriteButton
+						isAuth={isAuth}
+						isComicsFavourite={isComicsFavourite}
+						isDisabled={isDisabled}
+						onFavouriteClick={onFavouriteClick}
+					/>
 					<div className={s.data}>
 						<strong>On sale: </strong>
 						<span>{saleDate}</span>
 					</div>
 					<div className={s.data}>
 						<strong>Page count: </strong>
-						<span>{data.pageCount}</span>
+						<span>{comics.pageCount}</span>
 
 						<strong>Price: </strong>
-						<span>${data.printPrice || '-'}</span>
+						<span>${comics.printPrice || '-'}</span>
 					</div>
 					<div className={s.data}>
 						<strong>Creators: </strong>
 						<ul>
-							{data.creators.map((creator, index) => (
+							{comics.creators.map((creator, index) => (
 								<li key={index} className={s.creatorsList}>
 									<span className={s.creatorName}>
 										{creator.name}
@@ -61,7 +84,7 @@ function Comics() {
 					<div className={s.data}>
 						<strong>Description: </strong>
 						<p className={s.description}>
-							{data.description || '-'}
+							{comics.description || '-'}
 						</p>
 					</div>
 				</div>

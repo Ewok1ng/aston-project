@@ -67,7 +67,7 @@ export const favouriteApi = createApi({
 		addToFavourite: build.mutation({
 			async queryFn(args: {
 				email: string | null | undefined;
-				comics: Comics;
+				comics: Comics | undefined;
 			}) {
 				switch (process.env.REACT_APP_REMOTE_STORE) {
 					case 'firebase':
@@ -94,7 +94,7 @@ export const favouriteApi = createApi({
 							const authUser = getAuthUser();
 							const userData = getLsData(authUser);
 
-							if (userData) {
+							if (userData && args.comics !== undefined) {
 								userData.favouriteList.push(args.comics);
 								setLsData(authUser, userData);
 							}
@@ -112,7 +112,7 @@ export const favouriteApi = createApi({
 		removeFromFavourite: build.mutation({
 			async queryFn(args: {
 				email: string | null | undefined;
-				comics: Comics;
+				comics: Comics | undefined;
 			}) {
 				switch (process.env.REACT_APP_REMOTE_STORE) {
 					case 'firebase':
@@ -142,9 +142,12 @@ export const favouriteApi = createApi({
 
 							if (userData) {
 								userData.favouriteList =
-									userData.favouriteList.filter(
-										item => item.id !== args.comics.id
-									);
+									userData.favouriteList.filter(item => {
+										if (args.comics !== undefined) {
+											return item.id !== args.comics.id;
+										}
+										return item;
+									});
 								setLsData(authUser, userData);
 							}
 
